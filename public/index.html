@@ -4,139 +4,1157 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>متجر الساعات المميز</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100 font-sans">
+    <style>
+        /* ===== WINDOWS 2000 / XP DESIGN SYSTEM ===== */
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap');
 
-    <header class="bg-black text-white p-6 text-center text-2xl font-bold shadow-lg">
-        متجر الساعات المميز
-    </header>
-    
-    <div class="max-w-6xl mx-auto p-6">
-        <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            </div>
+        :root {
+            --win-bg: #d4d0c8;
+            --win-face: #ece9d8;
+            --win-dark: #808080;
+            --win-darker: #404040;
+            --win-light: #ffffff;
+            --win-title-start: #0058e6;
+            --win-title-end: #3a93ff;
+            --win-title-text: #ffffff;
+            --win-blue: #0058e6;
+            --win-border-light: #ffffff;
+            --win-border-dark: #808080;
+            --win-border-darker: #404040;
+            --win-active: #316ac5;
+            --win-taskbar: #245edb;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--win-bg);
+            background-image: url("data:image/svg+xml,%3Csvg width='4' height='4' viewBox='0 0 4 4' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='0' y='0' width='1' height='1' fill='%23c0bdb4' /%3E%3C/svg%3E");
+            font-family: 'Tajawal', 'Tahoma', 'MS Sans Serif', sans-serif;
+            font-size: 13px;
+            color: #000000;
+            min-height: 100vh;
+        }
+
+        /* ===== 3D BORDER UTILITIES ===== */
+        .raised {
+            border: 2px solid;
+            border-color: var(--win-light) var(--win-border-darker) var(--win-border-darker) var(--win-light);
+            background: var(--win-face);
+        }
+
+        .sunken {
+            border: 2px solid;
+            border-color: var(--win-border-darker) var(--win-light) var(--win-light) var(--win-border-darker);
+            background: var(--win-light);
+        }
+
+        .window {
+            border: 2px solid;
+            border-color: var(--win-light) var(--win-border-darker) var(--win-border-darker) var(--win-light);
+            background: var(--win-face);
+        }
+
+        /* ===== TASKBAR ===== */
+        .taskbar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 38px;
+            background: linear-gradient(180deg, #245edb 0%, #1a4db8 60%, #1244a8 100%);
+            border-top: 1px solid #6a9eff;
+            display: flex;
+            align-items: center;
+            padding: 0 4px;
+            z-index: 9999;
+            gap: 4px;
+        }
+
+        .start-btn {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: linear-gradient(180deg, #54a857 0%, #2d7a30 50%, #1e5e21 100%);
+            border: 1px solid #1a5c1d;
+            border-radius: 12px;
+            padding: 3px 10px 3px 6px;
+            color: white;
+            font-weight: bold;
+            font-size: 13px;
+            cursor: pointer;
+            font-family: 'Tajawal', Tahoma, sans-serif;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.3);
+        }
+
+        .start-btn:hover { filter: brightness(1.1); }
+
+        .start-logo {
+            width: 20px;
+            height: 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1px;
+        }
+        .start-logo div:nth-child(1) { background: #f55; border-radius: 1px; }
+        .start-logo div:nth-child(2) { background: #5bf; border-radius: 1px; }
+        .start-logo div:nth-child(3) { background: #5c5; border-radius: 1px; }
+        .start-logo div:nth-child(4) { background: #fd5; border-radius: 1px; }
+
+        .taskbar-clock {
+            margin-right: auto;
+            color: white;
+            font-size: 12px;
+            font-family: Tahoma, sans-serif;
+            background: rgba(0,0,0,0.2);
+            padding: 2px 8px;
+            border-radius: 3px;
+        }
+
+        /* ===== MAIN WINDOW ===== */
+        .main-window {
+            margin: 12px 12px 56px 12px;
+            border: 2px solid;
+            border-color: var(--win-light) var(--win-border-darker) var(--win-border-darker) var(--win-light);
+            background: var(--win-face);
+        }
+
+        /* ===== TITLE BAR ===== */
+        .title-bar {
+            background: linear-gradient(90deg, var(--win-title-start) 0%, var(--win-title-end) 100%);
+            padding: 4px 6px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            user-select: none;
+        }
+
+        .title-bar-text {
+            color: var(--win-title-text);
+            font-weight: bold;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .title-bar-icon {
+            width: 16px;
+            height: 16px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='6' fill='%23ffd700' stroke='%23b8860b' stroke-width='1'/%3E%3Ccircle cx='8' cy='8' r='1.5' fill='%23333'/%3E%3Cline x1='8' y1='4' x2='8' y2='2' stroke='%23333' stroke-width='1.5'/%3E%3Cline x1='8' y1='12' x2='8' y2='10' stroke='%23333' stroke-width='1'/%3E%3Cline x1='11' y1='5' x2='13' y2='3' stroke='%23333' stroke-width='1'/%3E%3C/svg%3E") center/contain no-repeat;
+        }
+
+        .title-bar-btns {
+            display: flex;
+            gap: 2px;
+        }
+
+        .win-btn {
+            width: 21px;
+            height: 21px;
+            background: linear-gradient(180deg, #e8e5dc 0%, #d4d0c8 100%);
+            border: 2px solid;
+            border-color: var(--win-light) var(--win-border-darker) var(--win-border-darker) var(--win-light);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: bold;
+            color: #000;
+            font-family: Marlett, Webdings, sans-serif;
+        }
+
+        .win-btn:active {
+            border-color: var(--win-border-darker) var(--win-light) var(--win-light) var(--win-border-darker);
+        }
+
+        .win-btn-close { background: linear-gradient(180deg, #f0cfc9 0%, #e0b8b0 100%); }
+
+        /* ===== MENU BAR ===== */
+        .menu-bar {
+            background: var(--win-face);
+            border-bottom: 1px solid var(--win-border-dark);
+            padding: 2px 4px;
+            display: flex;
+            gap: 2px;
+            flex-wrap: wrap;
+        }
+
+        .menu-item {
+            padding: 2px 8px;
+            cursor: pointer;
+            font-size: 13px;
+            border: 1px solid transparent;
+        }
+
+        .menu-item:hover {
+            background: var(--win-active);
+            color: white;
+            border-color: var(--win-blue);
+        }
+
+        /* ===== TOOLBAR ===== */
+        .toolbar {
+            background: var(--win-face);
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            border-bottom: 2px solid var(--win-border-dark);
+            flex-wrap: wrap;
+        }
+
+        .toolbar-sep {
+            width: 1px;
+            height: 22px;
+            background: var(--win-border-dark);
+            border-left: 1px solid var(--win-light);
+        }
+
+        .toolbar-btn {
+            padding: 3px 8px;
+            background: var(--win-face);
+            border: 1px solid transparent;
+            cursor: pointer;
+            font-size: 12px;
+            font-family: 'Tajawal', Tahoma, sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .toolbar-btn:hover {
+            border-color: var(--win-border-dark) var(--win-light) var(--win-light) var(--win-border-dark);
+            background: var(--win-face);
+        }
+
+        .toolbar-btn:active {
+            border-color: var(--win-light) var(--win-border-dark) var(--win-border-dark) var(--win-light);
+        }
+
+        /* ===== ADDRESS BAR ===== */
+        .address-bar {
+            background: var(--win-face);
+            padding: 3px 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border-bottom: 1px solid var(--win-border-dark);
+        }
+
+        .address-label {
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        .address-input {
+            flex: 1;
+            border: 2px solid;
+            border-color: var(--win-border-darker) var(--win-light) var(--win-light) var(--win-border-darker);
+            background: white;
+            padding: 2px 6px;
+            font-size: 12px;
+            font-family: Tahoma, sans-serif;
+            outline: none;
+        }
+
+        .address-go {
+            padding: 2px 10px;
+            background: linear-gradient(180deg, #f0ede4 0%, #d4d0c8 100%);
+            border: 2px solid;
+            border-color: var(--win-light) var(--win-border-darker) var(--win-border-darker) var(--win-light);
+            cursor: pointer;
+            font-size: 12px;
+            font-family: 'Tajawal', Tahoma, sans-serif;
+        }
+
+        /* ===== CONTENT AREA ===== */
+        .content-area {
+            display: flex;
+            min-height: 400px;
+        }
+
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            width: 180px;
+            min-width: 180px;
+            background: linear-gradient(180deg, #3168ce 0%, #1a4db8 40%, #2258c8 100%);
+            padding: 0;
+            border-left: 2px solid var(--win-border-darker);
+        }
+
+        .sidebar-section {
+            padding: 0;
+        }
+
+        .sidebar-title {
+            background: rgba(0,0,0,0.25);
+            color: white;
+            font-weight: bold;
+            font-size: 11px;
+            padding: 4px 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 10px;
+            color: white;
+            text-decoration: none;
+            font-size: 12px;
+            cursor: pointer;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .sidebar-link:hover {
+            background: rgba(255,255,255,0.15);
+        }
+
+        .sidebar-icon {
+            width: 16px;
+            height: 16px;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        /* ===== PRODUCTS PANE ===== */
+        .products-pane {
+            flex: 1;
+            background: var(--win-light);
+            overflow: auto;
+            padding: 12px;
+        }
+
+        .pane-header {
+            background: linear-gradient(180deg, #4a8af4 0%, #2060d8 100%);
+            color: white;
+            padding: 8px 12px;
+            margin: -12px -12px 12px -12px;
+            font-size: 14px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .loading-anim {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border: 2px solid rgba(255,255,255,0.4);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ===== PRODUCT CARD ===== */
+        #product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 10px;
+        }
+
+        .product-card {
+            background: var(--win-face);
+            border: 2px solid;
+            border-color: var(--win-light) var(--win-border-darker) var(--win-border-darker) var(--win-light);
+            cursor: default;
+        }
+
+        .product-card:hover {
+            border-color: var(--win-blue);
+        }
+
+        .product-card-title {
+            background: linear-gradient(90deg, #0058e6 0%, #3a93ff 100%);
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+            padding: 3px 6px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .product-card-title .win-btns-mini {
+            margin-right: auto;
+            display: flex;
+            gap: 1px;
+        }
+
+        .win-btn-mini {
+            width: 14px;
+            height: 14px;
+            background: linear-gradient(180deg, #e8e5dc, #d4d0c8);
+            border: 1px solid;
+            border-color: var(--win-light) var(--win-border-dark) var(--win-border-dark) var(--win-light);
+            cursor: pointer;
+            font-size: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-img-wrap {
+            border: 2px solid;
+            border-color: var(--win-border-darker) var(--win-light) var(--win-light) var(--win-border-darker);
+            margin: 6px;
+            overflow: hidden;
+            height: 150px;
+            background: #e0ddd4;
+        }
+
+        .product-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .product-body {
+            padding: 6px 8px;
+        }
+
+        .product-name {
+            font-size: 12px;
+            font-weight: bold;
+            color: #000080;
+            margin-bottom: 3px;
+        }
+
+        .product-desc {
+            font-size: 11px;
+            color: #444;
+            height: 28px;
+            overflow: hidden;
+            margin-bottom: 4px;
+            line-height: 1.4;
+        }
+
+        .product-price {
+            color: #000080;
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 6px;
+        }
+
+        .colors-label {
+            font-size: 10px;
+            color: #666;
+            margin-bottom: 3px;
+            text-decoration: underline;
+        }
+
+        .colors-wrap {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3px;
+            margin-bottom: 7px;
+            min-height: 22px;
+        }
+
+        .color-btn {
+            background: linear-gradient(180deg, #f0ede4 0%, #d4d0c8 100%);
+            border: 2px solid;
+            border-color: var(--win-light) var(--win-border-darker) var(--win-border-darker) var(--win-light);
+            padding: 1px 7px;
+            font-size: 11px;
+            cursor: pointer;
+            font-family: 'Tajawal', Tahoma, sans-serif;
+            color: #000;
+        }
+
+        .color-btn:active, .color-btn.selected {
+            background: linear-gradient(180deg, #d4d0c8 0%, #ece9d8 100%);
+            border-color: var(--win-border-darker) var(--win-light) var(--win-light) var(--win-border-darker);
+            color: #000080;
+        }
+
+        /* ===== ORDER BUTTON ===== */
+        .order-btn {
+            width: 100%;
+            background: linear-gradient(180deg, #e8e5dc 0%, #d4d0c8 100%);
+            border: 2px solid;
+            border-color: var(--win-light) var(--win-border-darker) var(--win-border-darker) var(--win-light);
+            padding: 4px 8px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            font-family: 'Tajawal', Tahoma, sans-serif;
+            color: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .order-btn:hover { filter: brightness(0.95); }
+        .order-btn:active {
+            border-color: var(--win-border-darker) var(--win-light) var(--win-light) var(--win-border-darker);
+        }
+
+        /* ===== STATUS BAR ===== */
+        .status-bar {
+            background: var(--win-face);
+            border-top: 2px solid;
+            border-color: var(--win-border-darker) var(--win-light) var(--win-light) var(--win-border-darker);
+            padding: 2px 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-panel {
+            border: 1px solid;
+            border-color: var(--win-border-darker) var(--win-light) var(--win-light) var(--win-border-darker);
+            padding: 1px 6px;
+            font-size: 11px;
+            flex: 1;
+        }
+
+        .status-panel-fixed {
+            border: 1px solid;
+            border-color: var(--win-border-darker) var(--win-light) var(--win-light) var(--win-border-darker);
+            padding: 1px 6px;
+            font-size: 11px;
+            white-space: nowrap;
+        }
+
+        /* ===== MODAL (Dialog Box) ===== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-overlay.active { display: flex; }
+
+        .modal-dialog {
+            background: var(--win-face);
+            border: 2px solid;
+            border-color: var(--win-light) var(--win-border-darker) var(--win-border-darker) var(--win-light);
+            width: 420px;
+            max-width: 95vw;
+            box-shadow: 4px 4px 12px rgba(0,0,0,0.5);
+        }
+
+        .modal-titlebar {
+            background: linear-gradient(90deg, var(--win-title-start) 0%, var(--win-title-end) 100%);
+            padding: 4px 6px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-titlebar-text {
+            color: white;
+            font-weight: bold;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .modal-icon {
+            width: 16px;
+            height: 16px;
+            font-size: 14px;
+        }
+
+        .modal-body {
+            padding: 12px 14px;
+        }
+
+        .order-info-box {
+            background: white;
+            border: 2px solid;
+            border-color: var(--win-border-darker) var(--win-light) var(--win-light) var(--win-border-darker);
+            padding: 6px 10px;
+            margin-bottom: 10px;
+            font-size: 12px;
+            color: #000080;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .form-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 6px;
+            gap: 6px;
+        }
+
+        .form-label {
+            font-size: 12px;
+            width: 100px;
+            text-align: left;
+            flex-shrink: 0;
+        }
+
+        .form-input {
+            flex: 1;
+            border: 2px solid;
+            border-color: var(--win-border-darker) var(--win-light) var(--win-light) var(--win-border-darker);
+            background: white;
+            padding: 3px 6px;
+            font-size: 12px;
+            font-family: 'Tajawal', Tahoma, sans-serif;
+            outline: none;
+        }
+
+        .form-input:focus {
+            border-color: var(--win-blue);
+        }
+
+        .form-textarea {
+            flex: 1;
+            border: 2px solid;
+            border-color: var(--win-border-darker) var(--win-light) var(--win-light) var(--win-border-darker);
+            background: white;
+            padding: 3px 6px;
+            font-size: 12px;
+            font-family: 'Tajawal', Tahoma, sans-serif;
+            outline: none;
+            resize: none;
+            height: 60px;
+        }
+
+        .modal-divider {
+            border: none;
+            border-top: 1px solid var(--win-border-dark);
+            border-bottom: 1px solid var(--win-light);
+            margin: 10px 0;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            padding: 8px 14px 12px;
+        }
+
+        .dialog-btn {
+            padding: 4px 20px;
+            background: linear-gradient(180deg, #f0ede4 0%, #d4d0c8 100%);
+            border: 2px solid;
+            border-color: var(--win-light) var(--win-border-darker) var(--win-border-darker) var(--win-light);
+            cursor: pointer;
+            font-size: 12px;
+            font-family: 'Tajawal', Tahoma, sans-serif;
+            min-width: 75px;
+        }
+
+        .dialog-btn:hover { filter: brightness(0.97); }
+        .dialog-btn:active {
+            border-color: var(--win-border-darker) var(--win-light) var(--win-light) var(--win-border-darker);
+        }
+
+        .dialog-btn-default {
+            border-color: var(--win-blue) var(--win-border-darker) var(--win-border-darker) var(--win-blue);
+        }
+
+        /* ===== SUCCESS DIALOG ===== */
+        .success-dialog {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        .success-dialog.active { display: flex; }
+
+        .success-box {
+            background: var(--win-face);
+            border: 2px solid;
+            border-color: var(--win-light) var(--win-border-darker) var(--win-border-darker) var(--win-light);
+            width: 340px;
+            box-shadow: 4px 4px 12px rgba(0,0,0,0.5);
+        }
+
+        .success-titlebar {
+            background: linear-gradient(90deg, var(--win-title-start) 0%, var(--win-title-end) 100%);
+            padding: 4px 6px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .success-body {
+            padding: 16px;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .info-icon {
+            width: 32px;
+            height: 32px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%230058e6'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-size='20' fill='white' font-family='serif' font-weight='bold'%3Ei%3C/text%3E%3C/svg%3E") center/contain no-repeat;
+            flex-shrink: 0;
+        }
+
+        .success-text { font-size: 12px; line-height: 1.6; }
+
+        /* ===== MARQUEE BANNER ===== */
+        .marquee-bar {
+            background: #000080;
+            color: #ffff00;
+            font-size: 13px;
+            font-weight: bold;
+            padding: 3px 0;
+            overflow: hidden;
+            border-top: 1px solid #5555ff;
+            border-bottom: 1px solid #000040;
+        }
+
+        marquee { letter-spacing: 1px; }
+
+        /* ===== IE PROGRESS BAR ===== */
+        .progress-container {
+            display: none;
+            position: fixed;
+            bottom: 38px;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: rgba(0,0,0,0.2);
+            z-index: 999;
+        }
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #0058e6, #5af);
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        /* ===== EMPTY STATE ===== */
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar { width: 16px; }
+        ::-webkit-scrollbar-track {
+            background: var(--win-face);
+            border-left: 1px solid var(--win-border-dark);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #e8e5dc, #d4d0c8);
+            border: 2px solid;
+            border-color: var(--win-light) var(--win-border-darker) var(--win-border-darker) var(--win-light);
+        }
+        ::-webkit-scrollbar-button {
+            background: linear-gradient(180deg, #e8e5dc, #d4d0c8);
+            border: 2px solid;
+            border-color: var(--win-light) var(--win-border-darker) var(--win-border-darker) var(--win-light);
+            height: 16px;
+        }
+
+        /* Progress indication */
+        .progress-container.active { display: block; }
+    </style>
+</head>
+<body>
+
+    <!-- IE-style Progress Bar -->
+    <div class="progress-container" id="progress-container">
+        <div class="progress-bar" id="progress-bar"></div>
     </div>
 
-    <div id="orderModal" class="hidden fixed inset-0 bg-black/70 flex justify-center items-center z-50 p-4">
-        <div class="bg-white p-8 rounded-xl w-full max-w-md shadow-2xl">
-            <h2 class="text-xl font-bold mb-4">تأكيد الطلب</h2>
-            <p id="order-details" class="mb-4 text-blue-700 font-semibold bg-blue-50 p-2 rounded text-center"></p>
-            
-            <div class="space-y-3">
-                <input id="u-name" type="text" placeholder="الاسم الكامل" class="border p-3 w-full rounded-lg focus:ring-2 focus:ring-black outline-none">
-                <input id="u-phone" type="tel" placeholder="رقم الهاتف" class="border p-3 w-full rounded-lg focus:ring-2 focus:ring-black outline-none">
-                <input id="u-city" type="text" placeholder="الولاية / المدينة" class="border p-3 w-full rounded-lg focus:ring-2 focus:ring-black outline-none">
-                <textarea id="u-address" placeholder="العنوان بالتفصيل" class="border p-3 w-full rounded-lg focus:ring-2 focus:ring-black outline-none h-24"></textarea>
+    <!-- Main Window -->
+    <div class="main-window" id="mainWindow">
+
+        <!-- Title Bar -->
+        <div class="title-bar">
+            <div class="title-bar-text">
+                <div class="title-bar-icon"></div>
+                متجر الساعات المميز — Microsoft Internet Explorer
             </div>
-            
-            <div class="flex gap-3 mt-6">
-                <button onclick="confirmOrder()" class="flex-1 bg-black text-white p-3 rounded-lg font-bold hover:bg-gray-800 transition">إرسال الطلب</button>
-                <button onclick="closeModal()" class="bg-red-100 text-red-600 px-4 py-3 rounded-lg font-bold hover:bg-red-200 transition">إلغاء</button>
+            <div class="title-bar-btns">
+                <button class="win-btn">_</button>
+                <button class="win-btn">□</button>
+                <button class="win-btn win-btn-close" onclick="if(confirm('هل تريد إغلاق المتجر؟'))window.close()">✕</button>
+            </div>
+        </div>
+
+        <!-- Menu Bar -->
+        <div class="menu-bar">
+            <span class="menu-item">ملف(F)</span>
+            <span class="menu-item">تحرير(E)</span>
+            <span class="menu-item">عرض(V)</span>
+            <span class="menu-item">المفضلة(A)</span>
+            <span class="menu-item">أدوات(T)</span>
+            <span class="menu-item">مساعدة(H)</span>
+        </div>
+
+        <!-- Toolbar -->
+        <div class="toolbar">
+            <button class="toolbar-btn" onclick="window.history.back()">
+                <span style="font-size:16px">⬅</span> رجوع
+            </button>
+            <button class="toolbar-btn" onclick="window.history.forward()">
+                تقدم <span style="font-size:16px">➡</span>
+            </button>
+            <div class="toolbar-sep"></div>
+            <button class="toolbar-btn" onclick="loadData()">
+                <span style="font-size:15px">🔄</span> تحديث
+            </button>
+            <button class="toolbar-btn" onclick="loadData()">
+                <span style="font-size:15px">🏠</span> الصفحة الرئيسية
+            </button>
+            <div class="toolbar-sep"></div>
+            <button class="toolbar-btn">
+                <span style="font-size:15px">🔍</span> بحث
+            </button>
+            <button class="toolbar-btn">
+                <span style="font-size:15px">★</span> المفضلة
+            </button>
+        </div>
+
+        <!-- Address Bar -->
+        <div class="address-bar">
+            <span class="address-label">عنوان:</span>
+            <input class="address-input" type="text" value="http://متجر-الساعات.com/index.html" readonly dir="ltr">
+            <button class="address-go">ذهاب</button>
+        </div>
+
+        <!-- Marquee -->
+        <div class="marquee-bar">
+            <marquee behavior="scroll" direction="right" scrollamount="3">
+                🕐 مرحباً بكم في متجر الساعات المميز! &nbsp;&nbsp;&nbsp; 🎉 أفضل الأسعار وأحدث الموديلات! &nbsp;&nbsp;&nbsp; ⌚ ساعات فاخرة بأسعار مناسبة! &nbsp;&nbsp;&nbsp; 📦 توصيل سريع لجميع الولايات! &nbsp;&nbsp;&nbsp; 🕐 مرحباً بكم في متجر الساعات المميز!
+            </marquee>
+        </div>
+
+        <!-- Content -->
+        <div class="content-area">
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <div class="sidebar-section">
+                    <div class="sidebar-title">المتجر</div>
+                    <a class="sidebar-link" onclick="loadData()">
+                        <span class="sidebar-icon">🏠</span> الرئيسية
+                    </a>
+                    <a class="sidebar-link">
+                        <span class="sidebar-icon">⌚</span> كل الساعات
+                    </a>
+                    <a class="sidebar-link">
+                        <span class="sidebar-icon">🔥</span> العروض
+                    </a>
+                    <a class="sidebar-link">
+                        <span class="sidebar-icon">✨</span> الجديد
+                    </a>
+                </div>
+                <div class="sidebar-section">
+                    <div class="sidebar-title">خدمات</div>
+                    <a class="sidebar-link">
+                        <span class="sidebar-icon">📦</span> تتبع طلبك
+                    </a>
+                    <a class="sidebar-link">
+                        <span class="sidebar-icon">📞</span> اتصل بنا
+                    </a>
+                    <a class="sidebar-link">
+                        <span class="sidebar-icon">❓</span> مساعدة
+                    </a>
+                </div>
+                <div class="sidebar-section" style="margin-top:10px; padding: 8px;">
+                    <div style="background: #ece9d8; border: 2px solid; border-color: #808080 #fff #fff #808080; padding: 6px; font-size: 10px; color:#333; text-align:center; line-height:1.6;">
+                        <div style="font-weight:bold; color:#000080; margin-bottom:4px;">💡 تنبيه</div>
+                        أفضل التصاميم وأجود المواد. ضمان عام على جميع المنتجات!
+                    </div>
+                </div>
+                <div style="padding:8px; margin-top:4px;">
+                    <div style="background:#000080; color:#fff; font-size:10px; text-align:center; padding:4px; font-weight:bold;">
+                        زوار اليوم: 1,247
+                    </div>
+                </div>
+            </div>
+
+            <!-- Products Pane -->
+            <div class="products-pane">
+                <div class="pane-header">
+                    <span>⌚</span>
+                    <span>المنتجات المتاحة — متجر الساعات</span>
+                    <span id="loading-spin" class="loading-anim" style="margin-right:auto"></span>
+                </div>
+
+                <div id="product-grid">
+                    <div class="empty-state">
+                        <div class="loading-anim" style="width:32px;height:32px;margin:0 auto 10px;border-width:3px"></div>
+                        <p>جاري تحميل المنتجات...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Status Bar -->
+        <div class="status-bar">
+            <div class="status-panel" id="status-text">جاهز</div>
+            <div class="status-panel-fixed">منطقة الإنترنت</div>
+            <div class="status-panel-fixed">🔒</div>
+        </div>
+
+    </div><!-- end main-window -->
+
+
+    <!-- ===== ORDER MODAL (Dialog Box) ===== -->
+    <div class="modal-overlay" id="orderModal">
+        <div class="modal-dialog">
+            <div class="modal-titlebar">
+                <div class="modal-titlebar-text">
+                    <span class="modal-icon">📋</span>
+                    تأكيد الطلب — متجر الساعات
+                </div>
+                <div class="title-bar-btns">
+                    <button class="win-btn" onclick="closeModal()">?</button>
+                    <button class="win-btn win-btn-close" onclick="closeModal()">✕</button>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="order-info-box" id="order-details">
+                    <span>📦</span>
+                    <span>تفاصيل المنتج</span>
+                </div>
+                <div class="form-row">
+                    <label class="form-label">الاسم الكامل:</label>
+                    <input id="u-name" class="form-input" type="text" placeholder="أدخل اسمك الكامل">
+                </div>
+                <div class="form-row">
+                    <label class="form-label">رقم الهاتف:</label>
+                    <input id="u-phone" class="form-input" type="tel" placeholder="0XXXXXXXXX">
+                </div>
+                <div class="form-row">
+                    <label class="form-label">الولاية / المدينة:</label>
+                    <input id="u-city" class="form-input" type="text" placeholder="اسم الولاية">
+                </div>
+                <div class="form-row" style="align-items:flex-start">
+                    <label class="form-label" style="padding-top:4px">العنوان التفصيلي:</label>
+                    <textarea id="u-address" class="form-textarea" placeholder="العنوان الكامل بالتفصيل..."></textarea>
+                </div>
+                <hr class="modal-divider">
+            </div>
+            <div class="modal-footer">
+                <button class="dialog-btn dialog-btn-default" onclick="confirmOrder()">✔ إرسال الطلب</button>
+                <button class="dialog-btn" onclick="closeModal()">✖ إلغاء</button>
             </div>
         </div>
     </div>
 
+    <!-- ===== SUCCESS DIALOG ===== -->
+    <div class="success-dialog" id="successDialog">
+        <div class="success-box">
+            <div class="success-titlebar">
+                <div class="modal-titlebar-text" style="color:white; font-weight:bold; font-size:13px; display:flex; align-items:center; gap:5px;">
+                    <span>ℹ</span> متجر الساعات
+                </div>
+                <button class="win-btn win-btn-close" onclick="closeSuccess()">✕</button>
+            </div>
+            <div class="success-body">
+                <div class="info-icon"></div>
+                <div class="success-text">
+                    <strong>تم استلام طلبك بنجاح!</strong><br>
+                    سنتصل بك في أقرب وقت ممكن<br>
+                    لتأكيد الشحن وتوصيل طلبك.<br><br>
+                    شكراً لثقتك بمتجرنا! ⌚
+                </div>
+            </div>
+            <div class="modal-footer" style="border-top: 2px solid; border-color: #808080 #fff #fff #808080; padding-top:8px;">
+                <button class="dialog-btn dialog-btn-default" onclick="closeSuccess()" style="min-width:80px;">موافق</button>
+            </div>
+        </div>
+    </div>
+
+
     <script>
         let currentProduct = null;
 
-        // 1. تحميل المنتجات من السيرفر
+        // Clock
+        function updateClock() {
+            const now = new Date();
+            const t = now.toLocaleTimeString('ar-DZ', { hour: '2-digit', minute: '2-digit' });
+            const d = now.toLocaleDateString('ar-DZ');
+            document.getElementById('taskbar-clock').textContent = t + ' | ' + d;
+        }
+        updateClock();
+        setInterval(updateClock, 1000);
+
+        // Progress bar simulation
+        function showProgress() {
+            const pc = document.getElementById('progress-container');
+            const pb = document.getElementById('progress-bar');
+            pc.classList.add('active');
+            pb.style.width = '0%';
+            let w = 0;
+            const iv = setInterval(() => {
+                w += Math.random() * 15;
+                if (w >= 90) { clearInterval(iv); w = 90; }
+                pb.style.width = w + '%';
+            }, 100);
+            return { interval: iv, bar: pb, container: pc };
+        }
+
+        function hideProgress(prog) {
+            prog.bar.style.width = '100%';
+            setTimeout(() => { prog.container.classList.remove('active'); prog.bar.style.width = '0%'; }, 400);
+            document.getElementById('loading-spin').style.display = 'none';
+        }
+
+        // Load products
         async function loadData() {
+            document.getElementById('status-text').textContent = 'جاري الاتصال بـ متجر-الساعات.com...';
+            document.getElementById('loading-spin').style.display = 'inline-block';
+            const prog = showProgress();
+
             try {
                 const res = await fetch('/api/products');
                 const products = await res.json();
                 const grid = document.getElementById('product-grid');
-                
+
+                hideProgress(prog);
+                document.getElementById('status-text').textContent = 'تم — ' + products.length + ' منتج';
+
                 if (products.length === 0) {
-                    grid.innerHTML = '<p class="col-span-full text-center text-gray-500 py-10">لا توجد منتجات متوفرة حالياً.</p>';
+                    grid.innerHTML = `<div class="empty-state">
+                        <div class="empty-icon">📭</div>
+                        <p>لا توجد منتجات متوفرة حالياً.</p>
+                    </div>`;
                     return;
                 }
 
                 grid.innerHTML = products.map(p => {
                     let colors = [];
-                    try { colors = JSON.parse(p.colors || '[]'); } catch(e) { colors = []; }
+                    try { colors = JSON.parse(p.colors || '[]'); } catch(e) {}
+                    const imgSrc = p.image || '/placeholder.svg?height=150&width=220';
 
                     return `
-                    <div class="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-200 hover:shadow-xl transition-shadow duration-300">
-                        <img id="img-${p.id}" src="${p.image || 'https://via.placeholder.com/400x300?text=No+Image'}" class="w-full h-64 object-cover">
-                        <div class="p-5">
-                            <h3 class="text-xl font-bold text-gray-800">${p.name}</h3>
-                            <p class="text-gray-500 text-sm mb-3 h-10 overflow-hidden">${p.description}</p>
-                            <div class="text-2xl font-black text-blue-600 mb-4">${p.price} DT</div>
-                            
-                            <div class="mb-4">
-                                <span class="text-xs font-bold text-gray-400 block mb-2 underline">الألوان المتاحة:</span>
-                                <div class="flex flex-wrap gap-2">
-                                    ${colors.map(c => `
-                                        <button onclick="selectColor(this, ${p.id}, '${c.name}', '${c.image}')" 
-                                                class="color-btn border border-gray-300 px-3 py-1 rounded-full text-sm transition hover:border-black bg-white">
-                                            ${c.name}
-                                        </button>
-                                    `).join('')}
-                                </div>
+                    <div class="product-card">
+                        <div class="product-card-title">
+                            <span>⌚</span> ${p.name}
+                            <div class="win-btns-mini">
+                                <button class="win-btn-mini">_</button>
+                                <button class="win-btn-mini">□</button>
                             </div>
-                            
+                        </div>
+                        <div class="product-img-wrap">
+                            <img id="img-${p.id}" src="${imgSrc}" alt="${p.name}" loading="lazy">
+                        </div>
+                        <div class="product-body">
+                            <div class="product-name">${p.name}</div>
+                            <div class="product-desc">${p.description || ''}</div>
+                            <div class="product-price">${p.price} DT</div>
+                            ${colors.length > 0 ? `
+                            <div class="colors-label">الألوان المتاحة:</div>
+                            <div class="colors-wrap">
+                                ${colors.map(c => `
+                                    <button class="color-btn"
+                                        onclick="selectColor(this, ${p.id}, '${c.name}', '${c.image}')">
+                                        ${c.name}
+                                    </button>
+                                `).join('')}
+                            </div>` : '<div class="colors-wrap"></div>'}
                             <input type="hidden" id="selected-c-${p.id}" value="">
-                            
-                            <button onclick="openOrder(${p.id}, '${p.name}')" 
-                                    class="w-full bg-black text-white py-3 rounded-lg font-bold hover:bg-gray-800 transition transform active:scale-95">
-                                اطلب الآن
+                            <button class="order-btn" onclick="openOrder(${p.id}, '${p.name}', ${colors.length})">
+                                🛒 اطلب الآن
                             </button>
                         </div>
                     </div>`;
                 }).join('');
-            } catch (error) {
-                console.error("خطأ في تحميل البيانات:", error);
+
+            } catch(e) {
+                hideProgress(prog);
+                document.getElementById('status-text').textContent = 'خطأ: تعذر الاتصال بالخادم';
+                document.getElementById('product-grid').innerHTML = `<div class="empty-state"><div class="empty-icon">⚠️</div><p>حدث خطأ في تحميل المنتجات.</p></div>`;
             }
         }
 
-        // 2. وظيفة اختيار اللون وتغيير الصورة
         function selectColor(btn, pId, cName, cImg) {
-            // تغيير الصورة الرئيسية للمنتج
             const mainImg = document.getElementById(`img-${pId}`);
             if (cImg) mainImg.src = cImg;
-
-            // تحديث قيمة اللون المختار في الحقل المخفي
             document.getElementById(`selected-c-${pId}`).value = cName;
-            
-            // تمييز الزر المختار بصرياً
             const buttons = btn.parentElement.querySelectorAll('.color-btn');
-            buttons.forEach(b => {
-                b.classList.remove('bg-black', 'text-white', 'border-black');
-                b.classList.add('bg-white', 'text-gray-700');
-            });
-            btn.classList.add('bg-black', 'text-white', 'border-black');
-            btn.classList.remove('bg-white');
+            buttons.forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            document.getElementById('status-text').textContent = 'تم اختيار اللون: ' + cName;
         }
 
-        // 3. فتح نافذة الطلب
-        function openOrder(id, name) {
+        function openOrder(id, name, hasColors) {
             const color = document.getElementById(`selected-c-${id}`).value;
-            
-            // إلزام المستخدم باختيار لون
-            if(!color) {
-                alert("يرجى اختيار لون الساعة أولاً من قائمة الألوان المتاحة.");
+            if (hasColors > 0 && !color) {
+                // Win2000 style alert
+                showAlert('يرجى اختيار لون الساعة أولاً من قائمة الألوان المتاحة.');
                 return;
             }
-            
             currentProduct = { id, name, color };
-            document.getElementById('order-details').innerText = `طلب لمنتج: ${name} (لون: ${color})`;
-            document.getElementById('orderModal').classList.remove('hidden');
+            document.getElementById('order-details').innerHTML = `<span>📦</span> <span>طلب: <strong>${name}</strong>${color ? ' — لون: ' + color : ''}</span>`;
+            document.getElementById('orderModal').classList.add('active');
+            document.getElementById('status-text').textContent = 'فتح نموذج الطلب...';
         }
 
-        // 4. إغلاق النافذة
-        function closeModal() { 
-            document.getElementById('orderModal').classList.add('hidden'); 
+        function closeModal() {
+            document.getElementById('orderModal').classList.remove('active');
         }
 
-        // 5. تأكيد وإرسال الطلب
+        function closeSuccess() {
+            document.getElementById('successDialog').classList.remove('active');
+        }
+
+        function showAlert(msg) {
+            // Simple inline alert styled as Win2000
+            const existing = document.getElementById('win-alert');
+            if (existing) existing.remove();
+            const alertDiv = document.createElement('div');
+            alertDiv.id = 'win-alert';
+            alertDiv.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:3000;display:flex;justify-content:center;align-items:center;';
+            alertDiv.innerHTML = `
+                <div style="background:#ece9d8;border:2px solid;border-color:#fff #404040 #404040 #fff;width:300px;box-shadow:4px 4px 8px rgba(0,0,0,0.4);">
+                    <div style="background:linear-gradient(90deg,#0058e6,#3a93ff);padding:4px 6px;display:flex;align-items:center;justify-content:space-between;">
+                        <span style="color:white;font-weight:bold;font-size:13px;">⚠ تنبيه</span>
+                        <button onclick="this.closest('#win-alert').remove()" style="width:21px;height:21px;background:linear-gradient(180deg,#f0cfc9,#e0b8b0);border:2px solid;border-color:#fff #404040 #404040 #fff;cursor:pointer;font-size:10px;">✕</button>
+                    </div>
+                    <div style="padding:16px;display:flex;gap:10px;align-items:center;">
+                        <div style="width:32px;height:32px;font-size:28px;flex-shrink:0">⚠️</div>
+                        <div style="font-size:12px;line-height:1.6;">${msg}</div>
+                    </div>
+                    <div style="padding:8px;text-align:center;border-top:2px solid;border-color:#808080 #fff #fff #808080;">
+                        <button onclick="this.closest('#win-alert').remove()" style="padding:4px 20px;background:linear-gradient(180deg,#f0ede4,#d4d0c8);border:2px solid;border-color:#fff #404040 #404040 #fff;cursor:pointer;font-size:12px;font-family:'Tajawal',Tahoma,sans-serif;min-width:75px;">موافق</button>
+                    </div>
+                </div>`;
+            document.body.appendChild(alertDiv);
+        }
+
         async function confirmOrder() {
-            const name = document.getElementById('u-name').value;
-            const phone = document.getElementById('u-phone').value;
-            const city = document.getElementById('u-city').value;
-            const address = document.getElementById('u-address').value;
+            const name = document.getElementById('u-name').value.trim();
+            const phone = document.getElementById('u-phone').value.trim();
+            const city = document.getElementById('u-city').value.trim();
+            const address = document.getElementById('u-address').value.trim();
 
             if (!name || !phone || !city) {
-                alert("الرجاء إكمال جميع البيانات المطلوبة لضمان وصول الطلب.");
+                showAlert('الرجاء إكمال جميع البيانات المطلوبة لضمان وصول الطلب.');
                 return;
             }
 
@@ -144,35 +1162,50 @@
                 productId: currentProduct.id,
                 productName: currentProduct.name,
                 selectedColor: currentProduct.color,
-                name: name,
-                phone: phone,
-                city: city,
-                address: address
+                name, phone, city, address
             };
+
+            document.getElementById('status-text').textContent = 'جاري إرسال الطلب...';
 
             try {
                 const response = await fetch('/api/order', {
                     method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(data)
                 });
 
                 if (response.ok) {
-                    alert("✅ تم استلام طلبك بنجاح! سنتصل بك في أقرب وقت لتأكيد الشحن.");
                     closeModal();
-                    // إعادة تعيين الحقول
                     document.getElementById('u-name').value = '';
                     document.getElementById('u-phone').value = '';
                     document.getElementById('u-city').value = '';
                     document.getElementById('u-address').value = '';
+                    document.getElementById('successDialog').classList.add('active');
+                    document.getElementById('status-text').textContent = 'تم إرسال الطلب بنجاح!';
                 }
             } catch (error) {
-                alert("❌ حدث خطأ أثناء إرسال الطلب، يرجى المحاولة لاحقاً.");
+                showAlert('حدث خطأ أثناء إرسال الطلب، يرجى المحاولة لاحقاً.');
+                document.getElementById('status-text').textContent = 'خطأ في الإرسال';
             }
         }
 
-        // تشغيل التحميل عند فتح الصفحة
         window.onload = loadData;
     </script>
+
+    <!-- Taskbar -->
+    <div class="taskbar">
+        <button class="start-btn">
+            <div class="start-logo">
+                <div></div><div></div><div></div><div></div>
+            </div>
+            ابدأ
+        </button>
+        <div style="width:1px;height:28px;background:rgba(255,255,255,0.3);margin:0 2px;"></div>
+        <button class="toolbar-btn" style="background:rgba(255,255,255,0.15);border-color:rgba(255,255,255,0.2);color:white;font-size:11px;gap:4px;border-radius:2px;">
+            <span>⌚</span> متجر الساعات
+        </button>
+        <div class="taskbar-clock" id="taskbar-clock">00:00</div>
+    </div>
+
 </body>
 </html>
