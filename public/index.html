@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>متجر الساعات المميز</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+
+    <header class="bg-black text-white p-6 text-center text-2xl font-bold shadow-lg">
+        متجر الساعات المميز
+    </header>
+    
+    <div class="max-w-6xl mx-auto p-6">
+        <div id="product-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            </div>
+    </div>
+
+    <div id="orderModal" class="hidden fixed inset-0 bg-black/70 flex justify-center items-center z-50 p-4">
+        <div class="bg-white p-8 rounded-xl w-full max-w-md shadow-2xl">
+            <h2 class="text-xl font-bold mb-4">تأكيد الطلب</h2>
+            <p id="order-details" class="mb-4 text-blue-700 font-semibold bg-blue-50 p-2 rounded text-center"></p>
+            
+            <div class="space-y-3">
+                <input id="u-name" type="text" placeholder="الاسم الكامل" class="border p-3 w-full rounded-lg focus:ring-2 focus:ring-black outline-none">
+                <input id="u-phone" type="tel" placeholder="رقم الهاتف" class="border p-3 w-full rounded-lg focus:ring-2 focus:ring-black outline-none">
+                <input id="u-city" type="text" placeholder="الولاية / المدينة" class="border p-3 w-full rounded-lg focus:ring-2 focus:ring-black outline-none">
+                <textarea id="u-address" placeholder="العنوان بالتفصيل" class="border p-3 w-full rounded-lg focus:ring-2 focus:ring-black outline-none h-24"></textarea>
+            </div>
+            
+            <div class="flex gap-3 mt-6">
+                <button onclick="confirmOrder()" class="flex-1 bg-black text-white p-3 rounded-lg font-bold hover:bg-gray-800 transition">إرسال الطلب</button>
+                <button onclick="closeModal()" class="bg-red-100 text-red-600 px-4 py-3 rounded-lg font-bold hover:bg-red-200 transition">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentProduct = null;
+
+        // 1. تحميل المنتجات من السيرفر
+        async function loadData() {
+            try {
+                const res = await fetch('/api/products');
+                const products = await res.json();
+                const grid = document.getElementById('product-grid');
+                
+                if (products.length === 0) {
+                    grid.innerHTML = '<p class="col-span-full text-center text-gray-500 py-10">لا توجد منتجات متوفرة حالياً.</p>';
+                    return;
+                }
+
+                grid.innerHTML = products.map(p => {
+                    let colors = [];
+                    try { colors = JSON.parse(p.colors || '[]'); } catch(e) { colors = []; }
+
+                    return `
+                    <div class="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-200 hover:shadow-xl transition-shadow duration-300">
+                        <img id="img-${p.id}" src="${p.image || 'https://via.placeholder.com/400x300?text=No+Image'}" class="w-full h-64 object-cover">
+                        <div class="p-5">
+                            <h3 class="text-xl font-bold text-gray-800">${p.name}</h3>
+                            <p class="text-gray-500 text-sm mb-3 h-10 overflow-hidden">${p.description}</p>
+                            <div class="text-2xl font-black text-blue-600 mb-4">${p.price} DT</div>
+                            
+                            <div class="mb-4">
+                                <span class="text-xs font-bold text-gray-400 block mb-2 underline">الألوان المتاحة:</span>
+                                <div class="flex flex-wrap gap-2">
+                                    ${colors.map(c => `
+                                        <button onclick="selectColor(this, ${p.id}, '${c.name}', '${c.image}')" 
+                                                class="color-btn border border-gray-300 px-3 py-1 rounded-full text-sm transition hover:border-black bg-white">
+                                            ${c.name}
+                                        </button>
+                                    `).join('')}
+                                </div>
+                            </div>
+                            
+                            <input type="hidden" id="selected-c-${p.id}" value="">
+                            
+                            <button onclick="openOrder(${p.id}, '${p.name}')" 
+                                    class="w-full bg-black text-white py-3 rounded-lg font-bold hover:bg-gray-800 transition transform active:scale-95">
+                                اطلب الآن
+                            </button>
+                        </div>
+                    </div>`;
+                }).join('');
+            } catch (error) {
+                console.error("خطأ في تحميل البيانات:", error);
+            }
+        }
+
+        // 2. وظيفة اختيار اللون وتغيير الصورة
+        function selectColor(btn, pId, cName, cImg) {
+            // تغيير الصورة الرئيسية للمنتج
+            const mainImg = document.getElementById(`img-${pId}`);
+            if (cImg) mainImg.src = cImg;
+
+            // تحديث قيمة اللون المختار في الحقل المخفي
+            document.getElementById(`selected-c-${pId}`).value = cName;
+            
+            // تمييز الزر المختار بصرياً
+            const buttons = btn.parentElement.querySelectorAll('.color-btn');
+            buttons.forEach(b => {
+                b.classList.remove('bg-black', 'text-white', 'border-black');
+                b.classList.add('bg-white', 'text-gray-700');
+            });
+            btn.classList.add('bg-black', 'text-white', 'border-black');
+            btn.classList.remove('bg-white');
+        }
+
+        // 3. فتح نافذة الطلب
+        function openOrder(id, name) {
+            const color = document.getElementById(`selected-c-${id}`).value;
+            
+            // إلزام المستخدم باختيار لون
+            if(!color) {
+                alert("يرجى اختيار لون الساعة أولاً من قائمة الألوان المتاحة.");
+                return;
+            }
+            
+            currentProduct = { id, name, color };
+            document.getElementById('order-details').innerText = `طلب لمنتج: ${name} (لون: ${color})`;
+            document.getElementById('orderModal').classList.remove('hidden');
+        }
+
+        // 4. إغلاق النافذة
+        function closeModal() { 
+            document.getElementById('orderModal').classList.add('hidden'); 
+        }
+
+        // 5. تأكيد وإرسال الطلب
+        async function confirmOrder() {
+            const name = document.getElementById('u-name').value;
+            const phone = document.getElementById('u-phone').value;
+            const city = document.getElementById('u-city').value;
+            const address = document.getElementById('u-address').value;
+
+            if (!name || !phone || !city) {
+                alert("الرجاء إكمال جميع البيانات المطلوبة لضمان وصول الطلب.");
+                return;
+            }
+
+            const data = {
+                productId: currentProduct.id,
+                productName: currentProduct.name,
+                selectedColor: currentProduct.color,
+                name: name,
+                phone: phone,
+                city: city,
+                address: address
+            };
+
+            try {
+                const response = await fetch('/api/order', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    alert("✅ تم استلام طلبك بنجاح! سنتصل بك في أقرب وقت لتأكيد الشحن.");
+                    closeModal();
+                    // إعادة تعيين الحقول
+                    document.getElementById('u-name').value = '';
+                    document.getElementById('u-phone').value = '';
+                    document.getElementById('u-city').value = '';
+                    document.getElementById('u-address').value = '';
+                }
+            } catch (error) {
+                alert("❌ حدث خطأ أثناء إرسال الطلب، يرجى المحاولة لاحقاً.");
+            }
+        }
+
+        // تشغيل التحميل عند فتح الصفحة
+        window.onload = loadData;
+    </script>
+</body>
+</html>
